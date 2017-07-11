@@ -245,7 +245,7 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
         train_generator,
         steps_per_epoch=len(orders_df_train.index) // batch_size,
         epochs=epochs,
-        validation_data=validation_generator,
+        validation_data=val_generator,
         validation_steps=len(orders_df_val.index) // batch_size,
         callbacks=[EarlyStopping(monitor='val_loss', patience=patience),
                    ModelCheckpoint(filepath=weights_path, save_best_only=True),
@@ -261,9 +261,9 @@ def main(verbose=1):
 
     if verbose >= 1:
         if sys.argv[1] == "":
-            print("========== Using TF on CPU ==========")
+            print("========== TF is running on CPU ==========")
         else:
-            print("========== Using TF on GPU %d =========="%(int(sys.argv[1])))
+            print("========== TF is running on GPU %d =========="%(int(sys.argv[1])))
 
     ##### Imports
     if verbose >= 1: print("Importing data...")
