@@ -260,6 +260,8 @@ def main(verbose=1):
     if verbose >= 1: print("Importing data...")
     #orders_df, users_dict = import_and_process_data()
     orders_df = pd.read_csv("../data/instacart/orders_df.csv", index_col=0)
+    orders_df.index = orders_df.index.astype(str)
+    orders_df.user_id = orders_df.user_id.astype(str)
     with gzip.open("../data/instacart/users_dict.gzip", "rb") as iOF:
         users_dict = pickle.load(iOF)
 
