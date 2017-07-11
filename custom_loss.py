@@ -48,6 +48,20 @@ def f1_loss_np(y_true, y_pred):
 
     return np.mean(out, axis=-1)
 
+def f1_loss_np_check(y_true, y_pred):
+    y_pred = np.clip(y_pred, _EPSILON, 1.0-_EPSILON)
+
+    tp = np.sum(np.round(y_true * y_pred), axis=-1) + _EPSILON
+    fp = np.sum(np.round(np.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)), axis=-1)
+    fn = np.sum(np.round(np.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)), axis=-1)
+
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+
+    out = 1.0 - ( (precision * recall) / (precision + recall + _EPSILON) )
+
+    return out
+
 def binary_crossentropy(y_true, y_pred):
     out = K.mean(K.binary_crossentropy(y_pred, y_true), axis=-1)
     return out
@@ -68,12 +82,16 @@ def check_loss(_shape):
 
     out1 = K.eval(f1_loss_tensor(K.variable(y_a), K.variable(y_b)))
     out2 = f1_loss_np(y_a, y_b)
+    out3 = f1_loss_np_check(y_a, y_b)
 
     assert(out1.shape == out2.shape)
+    assert(out1.shape == out3.shape)
     assert(out1.shape == shape[:-1])
     print(np.linalg.norm(out1))
     print(np.linalg.norm(out2))
+    print(np.linalg.norm(out3))
     print(np.linalg.norm(out1-out2))
+    print(np.linalg.norm(out1-out3))
 
 
 def test_loss():
