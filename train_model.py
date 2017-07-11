@@ -23,7 +23,7 @@ from keras.optimizers import Adam
 #==============================================
 #                   Files
 #==============================================
-from custom_loss import _loss_tensor
+from custom_loss import f1_loss_tensor
 
 #==============================================
 #                   Classes
