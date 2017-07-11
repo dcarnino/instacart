@@ -81,14 +81,14 @@ class InstacartIterator(Iterator):
             past_data = np.zeros((self.max_orders-1, self.n_products+8))
             for ix, on, pid, pw in past_orders[["order_number", "product_id", "add_to_cart_order"]].itertuples():
                 row_coord = self.max_orders - 1 - (current_order.order_number - on)
-                col_coords = [int(cc) for cc in pid]
+                col_coords = [int(cc)-1 for cc in pid]
                 past_data[row_coord, col_coords] = pw
 
             past_data[self.max_orders-current_order.order_number:,-8:-4] = past_metadata
             past_data[self.max_orders-current_order.order_number:,-4:] = current_metadata
 
             current_data = np.zeros((self.n_products,))
-            current_data[[int(cc) for cc in the_order.product_id[0]]] = 1.
+            current_data[[int(cc)-1 for cc in the_order.product_id[0]]] = 1.
 
             batch_x[i] = past_data
             batch_y[i] = current_data
@@ -284,7 +284,7 @@ def main(verbose=1):
     train_lstm(users_dict, orders_df_train, orders_df_val,
                max_orders, n_products,
                n_units_lstm=32, lr=0.001,
-               batch_size=32, epochs=1000, patience=10, patience_lr=3,
+               batch_size=512, epochs=1000, patience=10, patience_lr=3,
                weights_path="../data/instacart/models/lstm_keras_001.h5",
                model_path="../data/instacart/models/lstm_keras_001.json",
                verbose=verbose)
