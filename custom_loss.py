@@ -23,9 +23,9 @@ def _loss_np_example(y_true, y_pred):
 def _loss_tensor(y_true, y_pred):
     y_pred = K.clip(y_pred, _EPSILON, 1.0-_EPSILON)
 
-    tp = K.sum(K.round(y_true * y_pred)) + _EPSILON
-    fp = K.sum(K.round(K.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)))
-    fn = K.sum(K.round(K.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)))
+    tp = K.sum(K.round(y_true * y_pred), axis=-1) + _EPSILON
+    fp = K.sum(K.round(K.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)), axis=-1)
+    fn = K.sum(K.round(K.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)), axis=-1)
 
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
@@ -37,9 +37,9 @@ def _loss_tensor(y_true, y_pred):
 def _loss_np(y_true, y_pred):
     y_pred = np.clip(y_pred, _EPSILON, 1.0-_EPSILON)
 
-    tp = np.sum(np.round(y_true * y_pred)) + _EPSILON
-    fp = np.sum(np.round(np.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)))
-    fn = np.sum(np.round(np.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)))
+    tp = np.sum(np.round(y_true * y_pred), axis=-1) + _EPSILON
+    fp = np.sum(np.round(np.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)), axis=-1)
+    fn = np.sum(np.round(np.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)), axis=-1)
 
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
