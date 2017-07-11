@@ -65,18 +65,18 @@ def check_loss(_shape):
     out1 = K.eval(_loss_tensor(K.variable(y_a), K.variable(y_b)))
     out2 = _loss_np(y_a, y_b)
 
-    assert out1.shape == out2.shape
-    assert out1.shape == shape[:-1]
-    print np.linalg.norm(out1)
-    print np.linalg.norm(out2)
-    print np.linalg.norm(out1-out2)
+    assert(out1.shape == out2.shape)
+    assert(out1.shape == shape[:-1])
+    print(np.linalg.norm(out1))
+    print(np.linalg.norm(out2))
+    print(np.linalg.norm(out1-out2))
 
 
 def test_loss():
     shape_list = ['2d', '3d', '4d', '5d']
     for _shape in shape_list:
         check_loss(_shape)
-        print '======================'
+        print('======================')
 
 if __name__ == '__main__':
     test_loss()
