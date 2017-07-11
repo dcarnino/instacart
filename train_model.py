@@ -23,7 +23,7 @@ from keras.optimizers import Adam
 #==============================================
 #                   Files
 #==============================================
-from custom_loss import f1_loss_tensor, binary_crossentropy
+from custom_loss import fb_loss_tensor, binary_crossentropy
 
 #==============================================
 #                   Classes
