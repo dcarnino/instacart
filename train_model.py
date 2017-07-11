@@ -23,7 +23,7 @@ from keras.optimizers import Adam
 #==============================================
 #                   Files
 #==============================================
-
+from custom_loss import _loss_tensor
 
 #==============================================
 #                   Classes
@@ -216,8 +216,9 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
     model.add(LSTM(n_units_lstm))  # return a single vector of dimension 32
     model.add(Dense(n_classes, activation='sigmoid'))
 
-    model.compile(loss=fbs,
-                  optimizer=Adam(lr=lr))
+    model.compile(loss=_loss_tensor,
+                  optimizer=Adam(lr=lr),
+                  metrics=[fbs])
 
     # serialize model to json
     model_json = model.to_json()
