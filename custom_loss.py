@@ -65,6 +65,11 @@ def check_loss(_shape):
     out1 = K.eval(_loss_tensor(K.variable(y_a), K.variable(y_b)))
     out2 = _loss_np(y_a, y_b)
 
+    print(out1)
+    print(out2)
+    print(out1.shape)
+    print(out2.shape)
+
     assert(out1.shape == out2.shape)
     assert(out1.shape == shape[:-1])
     print(np.linalg.norm(out1))
