@@ -50,7 +50,6 @@ def f1_loss_np(y_true, y_pred):
 
 def binary_crossentropy(y_true, y_pred):
     out = K.mean(K.binary_crossentropy(y_pred, y_true), axis=-1)
-    print(K.eval(out).shape)
     return out
 
 
