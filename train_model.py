@@ -36,22 +36,13 @@ class InstacartIterator(Iterator):
         batch_size: Integer, size of a batch.
         shuffle: Boolean, whether to shuffle the data between epochs.
         seed: Random seed for data shuffling.
-        data_format: String, one of `channels_first`, `channels_last`.
-        save_to_dir: Optional directory where to save the pictures
-            being yielded, in a viewable format. This is useful
-            for visualizing the random transformations being
-            applied, for debugging purposes.
-        save_prefix: String prefix to use for saving sample
-            images (if `save_to_dir` is set).
-        save_format: Format to use for saving sample images
-            (if `save_to_dir` is set).
     """
 
-    def __init__(self, orders_df, user_dict, max_orders, n_products,
+    def __init__(self, orders_df, users_dict, max_orders, n_products,
                  batch_size=32, shuffle=False, test_time=False, seed=None):
 
         self.orders_df = orders_df
-        self.user_dict = user_dict
+        self.users_dict = users_dict
 
         self.max_orders = max_orders
         self.n_products = n_products
@@ -93,8 +84,8 @@ class InstacartIterator(Iterator):
                 col_coords = [int(cc) for cc in pid]
                 past_data[row_coord, col_coords] = pw
 
-            past_data[max_orders-current_order.order_number:,-8:-4] = past_metadata
-            past_data[max_orders-current_order.order_number:,-4:] = current_metadata
+            past_data[self.max_orders-current_order.order_number:,-8:-4] = past_metadata
+            past_data[self.max_orders-current_order.order_number:,-4:] = current_metadata
 
             current_data = np.zeros((self.n_products,))
             current_data[[int(cc) for cc in the_order.product_id[0]]] = 1.
