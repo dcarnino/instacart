@@ -216,9 +216,8 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
     model.add(LSTM(n_units_lstm))  # return a single vector of dimension 32
     model.add(Dense(n_classes, activation='sigmoid'))
 
-    model.compile(loss='binary_crossentropy',
-                  optimizer=Adam(lr=lr),
-                  metrics=[fbs])
+    model.compile(loss=fbs,
+                  optimizer=Adam(lr=lr))
 
     # serialize model to json
     model_json = model.to_json()
