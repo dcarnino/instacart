@@ -23,7 +23,7 @@ from keras.optimizers import Adam
 #==============================================
 #                   Files
 #==============================================
-from custom_loss import f1_loss_tensor
+from custom_loss import f1_loss_tensor, binary_crossentropy
 
 #==============================================
 #                   Classes
@@ -216,7 +216,7 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
     model.add(LSTM(n_units_lstm))  # return a single vector of dimension 32
     model.add(Dense(n_classes, activation='sigmoid'))
 
-    model.compile(loss=f1_loss_tensor,
+    model.compile(loss=binary_crossentropy,
                   optimizer=Adam(lr=lr),
                   metrics=[fbs])
 

@@ -1,10 +1,9 @@
-"""import os
+import os
 import sys
 if len(sys.argv) > 1:
     os.environ["CUDA_VISIBLE_DEVICES"]=sys.argv[1]
 else:
     os.environ["CUDA_VISIBLE_DEVICES"]=""
-"""
 import numpy as np
 from keras import losses
 from keras import backend as K
@@ -47,6 +46,11 @@ def f1_loss_np(y_true, y_pred):
 
     out = 1.0 - ( (precision * recall) / (precision + recall + _EPSILON) )
 
+    return out
+
+def binary_crossentropy(y_true, y_pred):
+    out = K.mean(K.binary_crossentropy(y_pred, y_true), axis=-1)
+    print(K.eval(out).shape)
     return out
 
 
