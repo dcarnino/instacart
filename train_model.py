@@ -15,7 +15,7 @@ import gzip
 import pickle
 import json
 from keras.preprocessing.image import Iterator
-from keras.models import Model, model_from_json
+from keras.models import Model, model_from_json, Sequential
 from keras.layers import Dense, LSTM
 from keras import backend as K
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
