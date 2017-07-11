@@ -23,30 +23,30 @@ def _loss_np_example(y_true, y_pred):
 def f1_loss_tensor(y_true, y_pred):
     y_pred = K.clip(y_pred, _EPSILON, 1.0-_EPSILON)
 
-    tp = K.sum(K.round(y_true * y_pred), axis=-1) + _EPSILON
-    fp = K.sum(K.round(K.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)), axis=-1)
-    fn = K.sum(K.round(K.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)), axis=-1)
+    tp = K.round(y_true * y_pred) + _EPSILON
+    fp = K.round(K.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON))
+    fn = K.round(K.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON))
 
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
 
     out = 1.0 - ( (precision * recall) / (precision + recall + _EPSILON) )
 
-    return out
+    return K.mean(out, axis=-1)
 
 def f1_loss_np(y_true, y_pred):
     y_pred = np.clip(y_pred, _EPSILON, 1.0-_EPSILON)
 
-    tp = np.sum(np.round(y_true * y_pred), axis=-1) + _EPSILON
-    fp = np.sum(np.round(np.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON)), axis=-1)
-    fn = np.sum(np.round(np.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON)), axis=-1)
+    tp = np.round(y_true * y_pred) + _EPSILON
+    fp = np.round(np.clip(y_pred - y_true, _EPSILON, 1.0-_EPSILON))
+    fn = np.round(np.clip(y_true - y_pred, _EPSILON, 1.0-_EPSILON))
 
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
 
     out = 1.0 - ( (precision * recall) / (precision + recall + _EPSILON) )
 
-    return out
+    return np.mean(out, axis=-1)
 
 def binary_crossentropy(y_true, y_pred):
     out = K.mean(K.binary_crossentropy(y_pred, y_true), axis=-1)
