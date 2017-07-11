@@ -254,25 +254,26 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
 
 
 
-
-
-#==============================================
-#                   Main
-#==============================================
-if __name__ == '__main__':
+def main(verbose=1):
+    """
+    Main function.
+    """
 
     ##### Imports
+    if verbose >= 1: print("Importing data...")
     #orders_df, users_dict = import_and_process_data()
     orders_df = pd.read_csv("../data/instacart/orders_df.csv", index_col=0)
     with gzip.open("../data/instacart/users_dict.gzip", "rb") as iOF:
         users_dict = pickle.load(iOF)
 
     ##### Get parameters
+    if verbose >= 1: print("Getting parameters...")
     df_products = pd.read_csv("../data/instacart/products.csv")
     n_products = df_products.product_id.shape[0]
     max_orders = orders_df.order_number.max()
 
     ##### Split train and val
+    if verbose >= 1: print("Splitting train and val...")
     train_frac = .8
     orders_df = orders_df.sample(frac=1)
     split_point = int(train_frac*len(orders_df.index))
@@ -280,10 +281,19 @@ if __name__ == '__main__':
     orders_df_val = orders_df.iloc[split_point:]
 
     #### Train
+    if verbose >= 1: print("Training LSTM net...")
     train_lstm(users_dict, orders_df_train, orders_df_val,
                max_orders, n_products,
                n_units_lstm=32, lr=0.001,
                batch_size=32, epochs=1000, patience=10, patience_lr=3,
                weights_path="../data/instacart/models/lstm_keras_001.h5",
                model_path="../data/instacart/models/lstm_keras_001.json",
-               verbose=1)
+               verbose=verbose)
+
+
+
+#==============================================
+#                   Main
+#==============================================
+if __name__ == '__main__':
+    main(1)
