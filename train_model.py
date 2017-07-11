@@ -259,6 +259,12 @@ def main(verbose=1):
     Main function.
     """
 
+    if verbose >= 1:
+        if sys.argv[1] == "":
+            print("========== Using TF on CPU ==========")
+        else:
+            print("========== Using TF on GPU %d =========="%(int(sys.argv[1])))
+
     ##### Imports
     if verbose >= 1: print("Importing data...")
     #orders_df, users_dict = import_and_process_data()
