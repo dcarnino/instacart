@@ -50,7 +50,7 @@ def fb_loss_np(y_true, y_pred, threshold_shift=0., beta=1):
 
     out = 1.0 - (beta_squared + 1) * (precision * recall) / (beta_squared * precision + recall + _EPSILON)
 
-    return K.mean(out, axis=-1)
+    return np.mean(out, axis=-1)
 
 def f1_loss_np_check(y_true, y_pred):
     y_pred = np.clip(y_pred, _EPSILON, 1.0-_EPSILON)
