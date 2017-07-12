@@ -288,8 +288,8 @@ def main(verbose=1):
     if verbose >= 1: print("Training LSTM net...")
     train_lstm(users_dict, orders_df_train, orders_df_val,
                max_orders, n_products,
-               n_units_lstm=32, lr=0.1,
-               batch_size=512, epochs=1000, patience=10, patience_lr=3,
+               n_units_lstm=32, lr=0.005,
+               batch_size=512, epochs=1000, patience=5, patience_lr=1,
                weights_path="../data/instacart/models/lstm_keras_001.h5",
                model_path="../data/instacart/models/lstm_keras_001.json",
                verbose=verbose)
