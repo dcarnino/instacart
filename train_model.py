@@ -23,7 +23,6 @@ from keras.optimizers import Adam
 #==============================================
 #                   Files
 #==============================================
-from custom_loss import fb_loss_tensor, binary_crossentropy
 
 #==============================================
 #                   Classes
@@ -190,6 +189,12 @@ def fbs(y_true, y_pred, threshold_shift=0., beta=1):
 
 
 
+def binary_crossentropy_weighted(y_true, y_pred, one_weight=4915.16):
+    y_weight = K.clip(y_true * one_weight, 1., one_weight)
+    out = K.binary_crossentropy(y_pred, y_true) * y_weight
+    return K.mean(out, axis=-1)
+
+
 
 
 def train_lstm(users_dict, orders_df_train, orders_df_val,
@@ -216,7 +221,7 @@ def train_lstm(users_dict, orders_df_train, orders_df_val,
     model.add(LSTM(n_units_lstm))  # return a single vector of dimension 32
     model.add(Dense(n_classes, activation='sigmoid'))
 
-    model.compile(loss=fb_loss_tensor,
+    model.compile(loss=binary_crossentropy_weighted,
                   optimizer=Adam(lr=lr),
                   metrics=[fbs])
 
